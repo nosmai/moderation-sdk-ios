@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'NosmaiModerationSDK'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'On-device content + text moderation for iOS — image, video, text and live camera.'
   s.description      = <<-DESC
     Nosmai Moderation is a closed-source iOS SDK for on-device content moderation:
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   # The release ZIP contains: NosmaiDetection.xcframework, onnxruntime/<slice>/,
   # Models/, PrivacyInfo.xcprivacy, LICENSE  (see package.sh).
-  s.source           = { :http => 'https://github.com/nosmai/moderation-sdk-ios/releases/download/1.0.0/NosmaiModerationSDK.zip' }
+  s.source           = { :http => "https://github.com/nosmai/moderation-sdk-ios/releases/download/#{s.version}/NosmaiModerationSDK.zip" }
 
   # The prebuilt static-library xcframework + ONNX Runtime static lib ship as
   # preserved paths and are linked manually below (a static-library xcframework
@@ -34,15 +34,19 @@ Pod::Spec.new do |s|
   s.frameworks = 'CoreML', 'Vision', 'CoreVideo', 'Accelerate',
                  'AVFoundation', 'CoreMedia', 'CoreGraphics'
 
-  fw = '$(PODS_TARGET_SRCROOT)'
-  s.pod_target_xcconfig = {
+  # These settings must land on the consuming app target, not the pod target.
+  # The pod vends a prebuilt static-library xcframework with no source files, so
+  # a pod target has nothing to compile or propagate; user_target_xcconfig puts
+  # the module search paths and link flags directly on the app.
+  fw = '$(PODS_ROOT)/NosmaiModerationSDK'
+  s.user_target_xcconfig = {
     # The simulator slices are arm64-only (Apple-silicon Macs).
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'x86_64',
     'NOSMAI_SLICE[sdk=iphoneos*]'          => 'ios-arm64',
     'NOSMAI_SLICE[sdk=iphonesimulator*]'   => 'ios-arm64-simulator',
     # The SDK Clang module + headers live in the selected xcframework slice.
-    'HEADER_SEARCH_PATHS' => "\"#{fw}/NosmaiDetection.xcframework/$(NOSMAI_SLICE)/Headers\"",
-    'SWIFT_INCLUDE_PATHS' => "\"#{fw}/NosmaiDetection.xcframework/$(NOSMAI_SLICE)/Headers\"",
+    'HEADER_SEARCH_PATHS' => "$(inherited) \"#{fw}/NosmaiDetection.xcframework/$(NOSMAI_SLICE)/Headers\"",
+    'SWIFT_INCLUDE_PATHS' => "$(inherited) \"#{fw}/NosmaiDetection.xcframework/$(NOSMAI_SLICE)/Headers\"",
     # Link the merged SDK static lib, then force-load ONNX Runtime (it supplies
     # the single shared XNNPACK/cpuinfo copy, so there are no duplicate symbols).
     'OTHER_LDFLAGS' =>

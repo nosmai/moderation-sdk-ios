@@ -23,6 +23,10 @@ Then run:
 pod install
 ```
 
+Open the generated `.xcworkspace` from now on. On Xcode 15 and later, set
+**Build Settings → User Script Sandboxing (`ENABLE_USER_SCRIPT_SANDBOXING`) to
+`No`** on your app target, so the CocoaPods resource-copy phase can run.
+
 ### Info.plist
 
 | Key | Value | Needed for |
