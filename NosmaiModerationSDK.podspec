@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     Register a project in the Nosmai portal to obtain a license key, used to
     initialize the SDK.
   DESC
-  s.homepage         = 'https://cocoapods.org/pods/NosmaiModerationSDK'
+  s.homepage         = 'https://github.com/nosmai/moderation-sdk-ios'
   s.license          = { :type => 'Proprietary', :text => 'See LICENSE file' }
   s.author           = { 'Nosmai' => 'admin@nosmai.com' }
   s.platform         = :ios, '14.0'
