@@ -6,7 +6,7 @@ fully offline on the Neural Engine. No frame or message leaves the device.
 
 ## Requirements
 
-- iOS 14.0+
+- iOS 15.1+
 - A Nosmai license key (register your app's bundle id in the Nosmai portal)
 
 ## Installation

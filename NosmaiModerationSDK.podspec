@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://github.com/nosmai/moderation-sdk-ios'
   s.license          = { :type => 'Proprietary', :text => 'See LICENSE file' }
   s.author           = { 'Nosmai' => 'admin@nosmai.com' }
-  s.platform         = :ios, '14.0'
+  s.platform         = :ios, '15.1'
 
   # The release ZIP contains: NosmaiDetection.xcframework, onnxruntime/<slice>/,
   # Models/, PrivacyInfo.xcprivacy, LICENSE  (see package.sh).
@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 
   s.static_framework = true
   s.frameworks = 'CoreML', 'Vision', 'CoreVideo', 'Accelerate',
-                 'AVFoundation', 'CoreMedia', 'CoreGraphics'
+                 'AVFoundation', 'CoreMedia', 'CoreGraphics', 'UIKit'
 
   # These settings must land on the consuming app target, not the pod target.
   # The pod vends a prebuilt static-library xcframework with no source files, so
